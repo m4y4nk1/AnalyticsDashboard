@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-commerce Analytics Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  </head>
+  <body>
+    <!-- Loader -->
+    <div class="loader">
+      <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <button class="toggle-btn" id="toggle-sidebar">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="logo">
+        <i class="fas fa-shopping-cart logo-icon"></i>
+        <span>E-commerce Analytics</span>
+      </div>
+      <div class="user-profile">
+        <span>John Doe</span>
+        <div class="user-avatar">
+          <span>JD</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="nav-section">
+        <h3>Main</h3>
+        <a class="nav-item active">
+          <i class="fas fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-item">
+          <i class="fas fa-chart-line"></i>
+          <span>Analytics</span>
+        </a>
+        <a class="nav-item">
+          <i class="fas fa-shopping-bag"></i>
+          <span>Products</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <h3>Management</h3>
+        <a class="nav-item">
+          <i class="fas fa-users"></i>
+          <span>Customers</span>
+        </a>
+        <a class="nav-item">
+          <i class="fas fa-truck"></i>
+          <span>Orders</span>
+        </a>
+        <a class="nav-item">
+          <i class="fas fa-box"></i>
+          <span>Inventory</span>
+        </a>
+      </div>
+      <div class="nav-section">
+        <h3>Settings</h3>
+        <a class="nav-item">
+          <i class="fas fa-user-cog"></i>
+          <span>Account</span>
+        </a>
+        <a class="nav-item">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+        <a class="nav-item">
+          <i class="fas fa-question-circle"></i>
+          <span>Help & Support</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <div class="dashboard-header">
+        <div class="date-range">
+          <i class="fas fa-calendar-alt"></i>
+          <span>March 1 - March 14, 2025</span>
+        </div>
+        <div class="dashboard-controls">
+          <button class="control-btn" id="export-btn">
+            <i class="fas fa-download"></i>
+            <span>Export</span>
+          </button>
+          <button class="control-btn" id="refresh-btn">
+            <i class="fas fa-sync"></i>
+            <span>Refresh</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Metrics Cards -->
+      <div class="metrics-grid">
+        <div class="metric-card revenue">
+          <div class="metric-header">
+            <div class="metric-title">Total Revenue</div>
+            <div class="metric-icon">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+          </div>
+          <div class="metric-value">$198,547</div>
+          <div class="metric-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span>12.5% from last period</span>
+          </div>
+        </div>
+        <div class="metric-card orders">
+          <div class="metric-header">
+            <div class="metric-title">Total Orders</div>
+            <div class="metric-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+          </div>
+          <div class="metric-value">8,742</div>
+          <div class="metric-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span>8.2% from last period</span>
+          </div>
+        </div>
+        <div class="metric-card users">
+          <div class="metric-header">
+            <div class="metric-title">New Customers</div>
+            <div class="metric-icon">
+              <i class="fas fa-user-plus"></i>
+            </div>
+          </div>
+          <div class="metric-value">1,483</div>
+          <div class="metric-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span>5.3% from last period</span>
+          </div>
+        </div>
+        <div class="metric-card conversion">
+          <div class="metric-header">
+            <div class="metric-title">Conversion Rate</div>
+            <div class="metric-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+          </div>
+          <div class="metric-value">3.2%</div>
+          <div class="metric-change negative">
+            <i class="fas fa-arrow-down"></i>
+            <span>0.8% from last period</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-title">Revenue Trends</div>
+            <div class="card-actions">
+              <button class="card-action" id="toggle-chart">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+              <button class="card-action" id="download-chart">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="revenue-chart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-title">Top Products</div>
+            <div class="card-actions">
+              <button class="card-action" id="refresh-products">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="product-list">
+            <div class="product-item">
+              <div class="product-image">
+                <i class="fas fa-mobile-alt"></i>
+              </div>
+              <div class="product-details">
+                <div class="product-name">Smartphone X</div>
+                <div class="product-category">Electronics</div>
+              </div>
+              <div class="product-sales">$24,200</div>
+            </div>
+            <div class="product-item">
+              <div class="product-image">
+                <i class="fas fa-headphones"></i>
+              </div>
+              <div class="product-details">
+                <div class="product-name">Wireless Headphones</div>
+                <div class="product-category">Audio</div>
+              </div>
+              <div class="product-sales">$18,750</div>
+            </div>
+            <div class="product-item">
+              <div class="product-image">
+                <i class="fas fa-laptop"></i>
+              </div>
+              <div class="product-details">
+                <div class="product-name">Ultrabook Pro</div>
+                <div class="product-category">Computers</div>
+              </div>
+              <div class="product-sales">$16,500</div>
+            </div>
+            <div class="product-item">
+              <div class="product-image">
+                <i class="fas fa-camera"></i>
+              </div>
+              <div class="product-details">
+                <div class="product-name">Digital Camera</div>
+                <div class="product-category">Photography</div>
+              </div>
+              <div class="product-sales">$12,300</div>
+            </div>
+            <div class="product-item">
+              <div class="product-image">
+                <i class="fas fa-tshirt"></i>
+              </div>
+              <div class="product-details">
+                <div class="product-name">Premium T-Shirt</div>
+                <div class="product-category">Clothing</div>
+              </div>
+              <div class="product-sales">$9,850</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="chart-card">
+        <div class="card-header">
+          <div class="card-title">Recent Orders</div>
+          <div class="card-actions">
+            <button class="card-action" id="add-order">
+              <i class="fas fa-plus"></i>
+            </button>
+            <button class="card-action" id="refresh-orders">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table">
+              <tr>
+                <td>#ORD-2025-8742</td>
+                <td>Sarah Johnson</td>
+                <td>Smartphone X</td>
+                <td>Mar 14, 2025</td>
+                <td>$1,299.00</td>
+                <td><span class="status delivered">Delivered</span></td>
+              </tr>
+              <tr>
+                <td>#ORD-2025-8741</td>
+                <td>Robert Williams</td>
+                <td>Wireless Headphones</td>
+                <td>Mar 13, 2025</td>
+                <td>$249.99</td>
+                <td><span class="status pending">Pending</span></td>
+              </tr>
+              <tr>
+                <td>#ORD-2025-8740</td>
+                <td>Emily Davis</td>
+                <td>Ultrabook Pro</td>
+                <td>Mar 13, 2025</td>
+                <td>$1,499.00</td>
+                <td><span class="status delivered">Delivered</span></td>
+              </tr>
+              <tr>
+                <td>#ORD-2025-8739</td>
+                <td>Michael Brown</td>
+                <td>Digital Camera</td>
+                <td>Mar 12, 2025</td>
+                <td>$899.00</td>
+                <td><span class="status returned">Returned</span></td>
+              </tr>
+              <tr>
+                <td>#ORD-2025-8738</td>
+                <td>Jennifer Wilson</td>
+                <td>Premium T-Shirt</td>
+                <td>Mar 11, 2025</td>
+                <td>$39.99</td>
+                <td><span class="status delivered">Delivered</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Add Order Modal -->
+    <div class="modal" id="order-modal">
+      <div class="modal-content">
+        <button class="close-modal" id="close-modal">
+          <i class="fas fa-times"></i>
+        </button>
+        <h2>Add New Order</h2>
+        <div id="order-alert" class="alert" style="display: none"></div>
+        <form id="order-form">
+          <div class="form-group">
+            <label for="customer-name">Customer Name</label>
+            <input type="text" id="customer-name" required />
+          </div>
+          <div class="form-group">
+            <label for="product-name">Product</label>
+            <select id="product-name" required>
+              <option value="">Select a product</option>
+              <option value="Smartphone X">Smartphone X</option>
+              <option value="Wireless Headphones">Wireless Headphones</option>
+              <option value="Ultrabook Pro">Ultrabook Pro</option>
+              <option value="Digital Camera">Digital Camera</option>
+              <option value="Premium T-Shirt">Premium T-Shirt</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="order-amount">Amount</label>
+            <input
+              type="number"
+              id="order-amount"
+              step="0.01"
+              min="0"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="order-status">Status</label>
+            <select id="order-status" required>
+              <option value="">Select a status</option>
+              <option value="delivered">Delivered</option>
+              <option value="pending">Pending</option>
+              <option value="returned">Returned</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="order-date">Date</label>
+            <input type="date" id="order-date" required />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Add Order</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
